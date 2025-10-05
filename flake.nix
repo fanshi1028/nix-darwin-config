@@ -49,6 +49,7 @@
             ripgrep
             yt-dlp
             zstd
+            nixfmt
           ];
 
           # Necessary for using flakes on this system.
