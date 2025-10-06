@@ -37,6 +37,13 @@
             sarasa-gothic
           ];
 
+          nix.channel.enable = false;
+
+          nix.extraOptions = ''
+            keep-outputs = true
+            keep-derivations = true
+          '';
+
           nix.settings = {
             trusted-public-keys = [
               "fanshi1028-personal.cachix.org-1:XoynOisskxlhrHM+m5ytvodedJdAo8gKpam/L6/AmBI="
