@@ -64,7 +64,6 @@
             vim
             cachix
             git
-            libvterm-neovim
             emacs-pgtk
             localsend
             nix-output-monitor
