@@ -37,7 +37,11 @@
             sarasa-gothic
           ];
 
+          environment.variables = {
+            EDITOR = "vim";
+          };
           environment.systemPackages = with pkgs; [
+            vim
             cachix
             git
             libvterm-neovim
