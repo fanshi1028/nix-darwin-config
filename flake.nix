@@ -37,6 +37,19 @@
             sarasa-gothic
           ];
 
+          nix.settings = {
+            trusted-public-keys = [
+              "fanshi1028-personal.cachix.org-1:XoynOisskxlhrHM+m5ytvodedJdAo8gKpam/L6/AmBI="
+              "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=  "
+              "haskell-miso-cachix.cachix.org-1:m8hN1cvFMJtYib4tj+06xkKt5ABMSGfe8W7s40x1kQ0="
+            ];
+            trusted-substituters = [
+              "https://fanshi1028-personal.cachix.org"
+              "https://nix-community.cachix.org"
+              "https://haskell-miso-cachix.cachix.org"
+            ];
+          };
+
           environment.variables = {
             EDITOR = "vim";
           };
