@@ -28,7 +28,13 @@
           };
 
           programs = {
-            fish.enable = true;
+            fish = {
+              enable = true;
+              promptInit = ''
+                ${builtins.readFile ./fish/fish_prompt.fish}
+                ${builtins.readFile ./fish/fish_right_prompt.fish}
+              '';
+            };
             direnv.enable = true;
           };
 
