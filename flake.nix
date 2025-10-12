@@ -26,6 +26,7 @@
                 ${builtins.readFile ./fish/fish_prompt.fish}
                 ${builtins.readFile ./fish/fish_right_prompt.fish}
               '';
+              interactiveShellInit = "set -U fish_greeting";
             };
             direnv.enable = true;
           };
