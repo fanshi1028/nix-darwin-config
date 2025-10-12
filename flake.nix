@@ -19,14 +19,6 @@
         {
           ids.gids.nixbld = 30000;
 
-          users = {
-            knownUsers = [ "fanshi" ];
-            users.fanshi = {
-              uid = 503;
-              shell = pkgs.fish;
-            };
-          };
-
           programs = {
             fish = {
               enable = true;
