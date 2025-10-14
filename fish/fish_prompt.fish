@@ -3,6 +3,7 @@ function fish_prompt --description 'Display prompt'
     if test $CMD_DURATION
         if test $CMD_DURATION -gt (math "1000 * 10")
             osascript -e (printf "display notification \"Returned $status, took %s seconds\" with title \"$history[1]\" sound name \"Ping\"" (math "$CMD_DURATION / 1000"))
+            set CMD_DURATION 0
         end
     end
 
