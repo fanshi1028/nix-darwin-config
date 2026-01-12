@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -12,8 +13,10 @@
       self,
       nix-darwin,
       nixpkgs,
+      nixpkgs-unstable,
     }:
     let
+      system = "x86_64-darwin";
       configuration =
         { pkgs, ... }:
         {
@@ -84,18 +87,20 @@
           environment.variables = {
             EDITOR = "vim";
           };
-          environment.systemPackages = with pkgs; [
-            vim
-            cachix
-            git
-            emacs-pgtk
-            localsend
-            nix-output-monitor
-            ripgrep
-            yt-dlp
-            zstd
-            nixfmt-rfc-style
-          ];
+          environment.systemPackages =
+            with pkgs;
+            [
+              vim
+              cachix
+              git
+              emacs-pgtk
+              localsend
+              nix-output-monitor
+              ripgrep
+              zstd
+              nixfmt-rfc-style
+            ]
+            ++ (with import nixpkgs-unstable { inherit system; }; [ yt-dlp ]);
 
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
@@ -108,7 +113,7 @@
           system.stateVersion = 6;
 
           # The platform the configuration will be used on.
-          nixpkgs.hostPlatform = "x86_64-darwin";
+          nixpkgs.hostPlatform = system;
         };
     in
     {
