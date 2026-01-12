@@ -6,6 +6,11 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    # NOTE: 0221e1f39850fae400b3c61329ee8d190174f61f is the last commit before "Bump Karabiner-DriverKit to v5.0.0" which only support MacOS > 12
+    # NOTE: Hence I am using the last release of Karabiner-DriverKit-VirtualHIDDevice which is v3.2.0 to support MacOS 11: http://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/tag/v3.2.0. The installed app located at /Applications/.Karabiner-VirtualHIDDevice-Manager.app
+    # NOTE: https://github.com/kmonad/kmonad/issues/961#issuecomment-2645729507
+    kmonad.url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix&ref=0221e1f39850fae400b3c61329ee8d190174f61f";
+    kmonad.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -14,11 +19,16 @@
       nix-darwin,
       nixpkgs,
       nixpkgs-unstable,
+      kmonad,
     }:
     let
       system = "x86_64-darwin";
+      kmonad-exe = kmonad.packages."${system}".default;
       configuration =
         { pkgs, ... }:
+        let
+          kmonadConfigFile = pkgs.writeText "kmonad-config.kbd" (builtins.readFile ./home-row-mod.kbd);
+        in
         {
           ids.gids.nixbld = 30000;
 
@@ -115,6 +125,23 @@
 
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = system;
+
+          launchd.daemons.kmonad = {
+            path = [ kmonad-exe ];
+            serviceConfig = {
+              Program = "${kmonad-exe}/bin/kmonad";
+              ProgramArguments = [
+                "${kmonad-exe}/bin/kmonad"
+                "${kmonadConfigFile}"
+              ];
+              KeepAlive = true;
+              RunAtLoad = true;
+              StandardOutPath = "/var/log/kmonad.log";
+              StandardErrorPath = "/var/log/kmonad.err";
+            };
+            # Optional: delay startup if HID services aren't ready
+            # throttleInterval = 5;
+          };
         };
     in
     {

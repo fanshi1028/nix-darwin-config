@@ -1,5 +1,30 @@
 {
   "nodes": {
+    "kmonad": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "nix",
+        "lastModified": 1744352773,
+        "narHash": "sha256-+dWbtWZTli21jwOOsrzaJGyLHknz5PatRWYKkRTmfuA=",
+        "ref": "0221e1f39850fae400b3c61329ee8d190174f61f",
+        "rev": "0221e1f39850fae400b3c61329ee8d190174f61f",
+        "revCount": 965,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/kmonad/kmonad"
+      },
+      "original": {
+        "dir": "nix",
+        "ref": "0221e1f39850fae400b3c61329ee8d190174f61f",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/kmonad/kmonad"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -55,6 +80,7 @@
     },
     "root": {
       "inputs": {
+        "kmonad": "kmonad",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable"
