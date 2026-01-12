@@ -99,6 +99,7 @@
               ripgrep
               zstd
               nixfmt-rfc-style
+              ffmpeg
             ]
             ++ (with import nixpkgs-unstable { inherit system; }; [ yt-dlp ]);
 
