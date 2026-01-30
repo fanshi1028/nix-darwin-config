@@ -111,6 +111,10 @@
               nixfmt-rfc-style
               ffmpeg
             ]
+            ++ [
+              haskell.compiler.ghc9122
+              cabal-install
+            ] # default env to for using cabal inti to quick start haskell project
             ++ (with import nixpkgs-unstable { inherit system; }; [ yt-dlp ]);
 
           # Necessary for using flakes on this system.
