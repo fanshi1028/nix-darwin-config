@@ -1,15 +1,15 @@
 {
   description = "Fanshi1028's nix-darwin system flake";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     # NOTE: 0221e1f39850fae400b3c61329ee8d190174f61f is the last commit before "Bump Karabiner-DriverKit to v5.0.0" which only support MacOS > 12
     # NOTE: Hence I am using the last release of Karabiner-DriverKit-VirtualHIDDevice which is v3.2.0 to support MacOS 11: http://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/tag/v3.2.0. The installed app located at /Applications/.Karabiner-VirtualHIDDevice-Manager.app
     # NOTE: https://github.com/kmonad/kmonad/issues/961#issuecomment-2645729507
-    kmonad.url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix&ref=0221e1f39850fae400b3c61329ee8d190174f61f";
+    # NOTE 552b0e83f55ea2e925065aa7401cf6407146bc81 is my fork allowing ghc9122 base on 0221e1f39850fae400b3c61329ee8d190174f61f
+    kmonad.url = "git+https://github.com/fanshi1028/kmonad?submodules=1&dir=nix&rev=552b0e83f55ea2e925065aa7401cf6407146bc81";
     kmonad.inputs.nixpkgs.follows = "nixpkgs";
   };
 

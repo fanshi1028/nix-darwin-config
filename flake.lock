@@ -8,21 +8,21 @@
       },
       "locked": {
         "dir": "nix",
-        "lastModified": 1744352773,
-        "narHash": "sha256-+dWbtWZTli21jwOOsrzaJGyLHknz5PatRWYKkRTmfuA=",
-        "ref": "0221e1f39850fae400b3c61329ee8d190174f61f",
-        "rev": "0221e1f39850fae400b3c61329ee8d190174f61f",
-        "revCount": 965,
+        "lastModified": 1769750700,
+        "narHash": "sha256-8bYls3bThz86JIXY7kWrNmgpavFr5NQ513F83B+ptko=",
+        "ref": "refs/heads/master",
+        "rev": "552b0e83f55ea2e925065aa7401cf6407146bc81",
+        "revCount": 968,
         "submodules": true,
         "type": "git",
-        "url": "https://github.com/kmonad/kmonad"
+        "url": "https://github.com/fanshi1028/kmonad"
       },
       "original": {
         "dir": "nix",
-        "ref": "0221e1f39850fae400b3c61329ee8d190174f61f",
+        "rev": "552b0e83f55ea2e925065aa7401cf6407146bc81",
         "submodules": true,
         "type": "git",
-        "url": "https://github.com/kmonad/kmonad"
+        "url": "https://github.com/fanshi1028/kmonad"
       }
     },
     "nix-darwin": {
@@ -48,16 +48,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1758730446,
-        "narHash": "sha256-Nv7AIiy9cakHQ4hcoQO2bbV6k0zDKAaoftK2FIYsECM=",
+        "lastModified": 1767313136,
+        "narHash": "sha256-16KkgfdYqjaeRGBaYsNrhPRRENs0qzkQVUooNHtoy2w=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b5d84e5b26d74be4bd806161af0878251342c65a",
+        "rev": "ac62194c3917d5f474c1a844b6fd6da2db95077d",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixpkgs-25.05-darwin",
+        "ref": "nixos-25.05",
         "repo": "nixpkgs",
         "type": "github"
       }
