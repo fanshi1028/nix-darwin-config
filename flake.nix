@@ -94,6 +94,15 @@
             ];
           };
 
+          nix.registry = {
+            nixpkgs = {
+              flake = nixpkgs;
+            };
+            nixpkgs-unstable = {
+              flake = nixpkgs-unstable;
+            };
+          };
+
           environment.variables = {
             EDITOR = "vim";
           };
