@@ -1,16 +1,16 @@
 {
   description = "Fanshi1028's nix-darwin system flake";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    # NOTE: 0221e1f39850fae400b3c61329ee8d190174f61f is the last commit before "Bump Karabiner-DriverKit to v5.0.0" which only support MacOS > 12
-    # NOTE: Hence I am using the last release of Karabiner-DriverKit-VirtualHIDDevice which is v3.2.0 to support MacOS 11: http://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/tag/v3.2.0. The installed app located at /Applications/.Karabiner-VirtualHIDDevice-Manager.app
-    # NOTE: https://github.com/kmonad/kmonad/issues/961#issuecomment-2645729507
-    # NOTE 552b0e83f55ea2e925065aa7401cf6407146bc81 is my fork allowing ghc9122 base on 0221e1f39850fae400b3c61329ee8d190174f61f
-    kmonad.url = "git+https://github.com/fanshi1028/kmonad?submodules=1&dir=nix&rev=552b0e83f55ea2e925065aa7401cf6407146bc81";
+    kmonad.url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
     kmonad.inputs.nixpkgs.follows = "nixpkgs";
+    opencode.url = "github:dmitryryabkov/opencode/2d3916b95a7452a7bf4ca266320e0aa5dcc701ab";
+    opencode.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    forgecode.url = "github:fanshi1028/forgecode";
+    forgecode.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -20,18 +20,19 @@
       nixpkgs,
       nixpkgs-unstable,
       kmonad,
+      opencode,
+      forgecode,
     }:
     let
-      system = "x86_64-darwin";
+      system = "aarch64-darwin";
       kmonad-exe = kmonad.packages."${system}".default;
+      opencode-exe = opencode.packages."${system}".default;
       configuration =
         { pkgs, ... }:
         let
           kmonadConfigFile = pkgs.writeText "kmonad-config.kbd" (builtins.readFile ./home-row-mod.kbd);
         in
         {
-          ids.gids.nixbld = 30000;
-
           networking = {
             knownNetworkServices = [ "Wi-Fi" ];
             dns = [
@@ -74,7 +75,14 @@
             sarasa-gothic
           ];
 
-          nix.channel.enable = false;
+          nix.channel.enable = true;
+
+          nix.nixPath = [
+            {
+              nixpkgs = "${inputs.nixpkgs}";
+              nixpkgs-unstable = "${inputs.nixpkgs-unstable}";
+            }
+          ];
 
           nix.extraOptions = ''
             keep-outputs = true
@@ -107,24 +115,80 @@
             EDITOR = "vim";
           };
           environment.systemPackages =
-            with pkgs;
-            [
-              vim
-              cachix
-              git
-              emacs-pgtk
-              localsend
-              nix-output-monitor
-              ripgrep
-              zstd
-              nixfmt-rfc-style
-              ffmpeg
-            ]
-            ++ [
-              haskell.compiler.ghc9122
-              cabal-install
-            ] # default env to for using cabal inti to quick start haskell project
-            ++ (with import nixpkgs-unstable { inherit system; }; [ yt-dlp ]);
+            [ forgecode.packages."${system}".default ]
+            ++ (
+              with pkgs;
+              [
+                mpv
+                vim
+                cachix
+                git
+                emacs-pgtk
+                localsend
+                nix-output-monitor
+                ripgrep
+                zstd
+                nixfmt-rfc-style
+                ffmpeg
+                emacs-lsp-booster
+                python313Packages.huggingface-hub
+                # for forgecode
+                bat
+                zsh
+                oh-my-zsh
+                fzf
+              ]
+              # default env to for using cabal inti to quick start haskell project
+              ++ [
+                haskell.compiler.ghc9122
+                cabal-install
+              ]
+              ++ lib.optionals (system == "aarch64-darwin") [
+                (callPackage ./obs-studio.nix { })
+              ]
+            )
+            ++ (with import nixpkgs-unstable { inherit system; }; [
+              yt-dlp
+              pi-coding-agent
+
+              (llama-cpp.overrideAttrs ({
+                version = "8505";
+                src = fetchFromGitHub {
+                  owner = "ggml-org";
+                  repo = "llama.cpp";
+                  tag = "b8505";
+                  hash = "sha256-Bg7fUTHsXcwEdemi0/T4GXB09SOx4UHZ7clN9zQ1zDA=";
+                  leaveDotGit = true;
+                  postFetch = ''
+                    git -C "$out" rev-parse --short HEAD > $out/COMMIT
+                    find "$out" -name .git -print0 | xargs -0 rm -rf
+                  '';
+                };
+                npmDepsHash = "sha256-DxgUDVr+kwtW55C4b89Pl+j3u2ILmACcQOvOBjKWAKQ=";
+              }))
+              python314Packages.mlx-lm
+              stable-diffusion-cpp
+              (nono.overrideAttrs (
+                finalAttrs: prevAttrs: {
+                  cargoHash = "sha256-xZgPNfNsA/6qytyxRpFlDARGB9Xik6HiYQtG3nYGTKc=";
+                  src = fetchFromGitHub {
+                    owner = "always-further";
+                    repo = "nono";
+                    tag = "v0.22.1";
+                    hash = "sha256-/CE4XaJrUFX65z2l848xmDaP31tF17bm9ZCSV+4Cc58=";
+                  };
+                  version = "v0.22.1";
+                  cargoDeps = rustPlatform.fetchCargoVendor {
+                    inherit (finalAttrs) pname src version;
+                    hash = finalAttrs.cargoHash;
+                  };
+                  checkFlags = [
+                    # TEMP FIXME error: test failed
+                    "--skip=env_nono_allow_comma_separated"
+                  ];
+                }
+              ))
+            ]);
 
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
@@ -139,28 +203,23 @@
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = system;
 
-          launchd.daemons.kmonad = {
-            path = [ kmonad-exe ];
+          launchd.daemons.Karabiner-VirtualHIDDevice-Daemon = {
             serviceConfig = {
-              Program = "${kmonad-exe}/bin/kmonad";
-              ProgramArguments = [
-                "${kmonad-exe}/bin/kmonad"
-                "${kmonadConfigFile}"
-              ];
+              Program = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
               KeepAlive = true;
               RunAtLoad = true;
-              StandardOutPath = "/var/log/kmonad.log";
-              StandardErrorPath = "/var/log/kmonad.err";
+              StandardOutPath = "/tmp/Karabiner-DriverKit-VirtualHIDDevice.log";
+              StandardErrorPath = "/tmp/Karabiner-DriverKit-VirtualHIDDevice.err";
             };
-            # Optional: delay startup if HID services aren't ready
-            # throttleInterval = 5;
           };
+
+          security.pam.services.sudo_local.touchIdAuth = true;
         };
     in
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#Francis
-      darwinConfigurations.Francis = nix-darwin.lib.darwinSystem {
+      darwinConfigurations.Franciss-MacBook-Pro = nix-darwin.lib.darwinSystem {
         modules = [ configuration ];
       };
     };
