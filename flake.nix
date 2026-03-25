@@ -212,6 +212,23 @@
               StandardErrorPath = "/tmp/Karabiner-DriverKit-VirtualHIDDevice.err";
             };
           };
+          # FIXME: not work due to https://github.com/kmonad/kmonad/issues/675
+          # launchd.daemons.kmonad = with pkgs; {
+          #   path = [ kmonad-exe ];
+          #   serviceConfig = {
+          #     Program = "${kmonad-exe}/bin/kmonad";
+          #     ProgramArguments = [
+          #       "${kmonad-exe}/bin/kmonad"
+          #       "${kmonadConfigFile}"
+          #     ];
+          #     KeepAlive = true;
+          #     RunAtLoad = true;
+          #     StandardOutPath = "/tmp/kmonad.log";
+          #     StandardErrorPath = "/tmp/kmonad.err";
+          #     # Optional: delay startup if HID services aren't ready
+          #     # throttleInterval = 5;
+          #   };
+          # };
 
           security.pam.services.sudo_local.touchIdAuth = true;
         };
