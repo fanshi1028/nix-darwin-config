@@ -9,8 +9,6 @@
     kmonad.inputs.nixpkgs.follows = "nixpkgs";
     opencode.url = "github:dmitryryabkov/opencode/2d3916b95a7452a7bf4ca266320e0aa5dcc701ab";
     opencode.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    forgecode.url = "github:fanshi1028/forgecode";
-    forgecode.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -21,7 +19,6 @@
       nixpkgs-unstable,
       kmonad,
       opencode,
-      forgecode,
     }:
     let
       system = "aarch64-darwin";
@@ -115,8 +112,7 @@
             EDITOR = "vim";
           };
           environment.systemPackages =
-            [ forgecode.packages."${system}".default ]
-            ++ (
+            (
               with pkgs;
               [
                 mpv
@@ -132,11 +128,6 @@
                 ffmpeg
                 emacs-lsp-booster
                 python313Packages.huggingface-hub
-                # for forgecode
-                bat
-                zsh
-                oh-my-zsh
-                fzf
               ]
               # default env to for using cabal inti to quick start haskell project
               ++ [

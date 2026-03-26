@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "forgecode": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1774411474,
-        "narHash": "sha256-r2O9mAR8ph/s9RM0LS7lGgzZ+iOyzS5BnJftyCJhAEg=",
-        "owner": "fanshi1028",
-        "repo": "forgecode",
-        "rev": "b5317db7a76ba2c6b26563fffae98e77f4bc84c0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "fanshi1028",
-        "repo": "forgecode",
-        "type": "github"
-      }
-    },
     "kmonad": {
       "inputs": {
         "nixpkgs": [
@@ -120,7 +100,6 @@
     },
     "root": {
       "inputs": {
-        "forgecode": "forgecode",
         "kmonad": "kmonad",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
