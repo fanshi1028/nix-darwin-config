@@ -68,12 +68,12 @@
             sarasa-gothic
           ];
 
-          nix.channel.enable = true;
+          nix.channel.enable = false;
 
           nix.nixPath = [
             {
-              nixpkgs = "${inputs.nixpkgs}";
-              nixpkgs-unstable = "${inputs.nixpkgs-unstable}";
+              nixpkgs = "flake:nixpkgs";
+              nixpkgs-unstable = "flake:nixpkgs-unstable";
             }
           ];
 
