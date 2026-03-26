@@ -77,34 +77,12 @@
         "type": "github"
       }
     },
-    "opencode": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1774220349,
-        "narHash": "sha256-xItHMXDim26zczxcAuh5nzcXi7Zra8KbJJcCXf6zO5U=",
-        "owner": "dmitryryabkov",
-        "repo": "opencode",
-        "rev": "2d3916b95a7452a7bf4ca266320e0aa5dcc701ab",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dmitryryabkov",
-        "repo": "opencode",
-        "rev": "2d3916b95a7452a7bf4ca266320e0aa5dcc701ab",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "kmonad": "kmonad",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable",
-        "opencode": "opencode"
+        "nixpkgs-unstable": "nixpkgs-unstable"
       }
     }
   },

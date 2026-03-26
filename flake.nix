@@ -7,8 +7,6 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     kmonad.url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
     kmonad.inputs.nixpkgs.follows = "nixpkgs";
-    opencode.url = "github:dmitryryabkov/opencode/2d3916b95a7452a7bf4ca266320e0aa5dcc701ab";
-    opencode.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -18,12 +16,10 @@
       nixpkgs,
       nixpkgs-unstable,
       kmonad,
-      opencode,
     }:
     let
       system = "aarch64-darwin";
       kmonad-exe = kmonad.packages."${system}".default;
-      opencode-exe = opencode.packages."${system}".default;
       configuration =
         { pkgs, ... }:
         let
@@ -159,26 +155,6 @@
               }))
               python314Packages.mlx-lm
               stable-diffusion-cpp
-              (nono.overrideAttrs (
-                finalAttrs: prevAttrs: {
-                  cargoHash = "sha256-xZgPNfNsA/6qytyxRpFlDARGB9Xik6HiYQtG3nYGTKc=";
-                  src = fetchFromGitHub {
-                    owner = "always-further";
-                    repo = "nono";
-                    tag = "v0.22.1";
-                    hash = "sha256-/CE4XaJrUFX65z2l848xmDaP31tF17bm9ZCSV+4Cc58=";
-                  };
-                  version = "v0.22.1";
-                  cargoDeps = rustPlatform.fetchCargoVendor {
-                    inherit (finalAttrs) pname src version;
-                    hash = finalAttrs.cargoHash;
-                  };
-                  checkFlags = [
-                    # TEMP FIXME error: test failed
-                    "--skip=env_nono_allow_comma_separated"
-                  ];
-                }
-              ))
             ]);
 
           # Necessary for using flakes on this system.
