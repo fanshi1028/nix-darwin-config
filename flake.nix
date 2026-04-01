@@ -7,6 +7,8 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     kmonad.url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
     kmonad.inputs.nixpkgs.follows = "nixpkgs";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -16,6 +18,7 @@
       nixpkgs,
       nixpkgs-unstable,
       kmonad,
+      emacs-overlay,
     }:
     let
       system = "aarch64-darwin";
@@ -115,7 +118,12 @@
                 vim
                 cachix
                 git
-                emacs-pgtk
+                # NOTE: Latest emacs for mac dictation
+                # https://xenodium.com/macos-dictation-returns-to-emacs-fix-merged
+                (import nixpkgs {
+                  inherit system;
+                  overlays = [ emacs-overlay.overlays.default ];
+                }).emacs-git-pgtk
                 localsend
                 nix-output-monitor
                 ripgrep
