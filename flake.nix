@@ -136,7 +136,6 @@
             )
             ++ (with import nixpkgs-unstable { inherit system; }; [
               yt-dlp
-              pi-coding-agent
 
               (llama-cpp.overrideAttrs ({
                 version = "8505";
