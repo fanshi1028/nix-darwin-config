@@ -132,6 +132,9 @@
                 ffmpeg
                 emacs-lsp-booster
                 python313Packages.huggingface-hub
+                # TEMP for doom emacs env: https://github.com/doomemacs/doomemacs/issues/6612#issuecomment-4150181313
+                fd
+                tree
               ]
               # default env to for using cabal inti to quick start haskell project
               ++ [
