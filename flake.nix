@@ -148,20 +148,20 @@
             ++ (with import nixpkgs-unstable { inherit system; }; [
               yt-dlp
 
-              (llama-cpp.overrideAttrs ({
-                version = "8505";
+              (llama-cpp.overrideAttrs (finalAttrs: {
+                version = "8664";
                 src = fetchFromGitHub {
                   owner = "ggml-org";
                   repo = "llama.cpp";
-                  tag = "b8505";
-                  hash = "sha256-Bg7fUTHsXcwEdemi0/T4GXB09SOx4UHZ7clN9zQ1zDA=";
+                  tag = "b${finalAttrs.version}";
+                  hash = "sha256-2bPFOEbBPpv2GwhMRkpJpIySh4/KLXKQ8uV7TiY3h+M=";
                   leaveDotGit = true;
                   postFetch = ''
                     git -C "$out" rev-parse --short HEAD > $out/COMMIT
                     find "$out" -name .git -print0 | xargs -0 rm -rf
                   '';
                 };
-                npmDepsHash = "sha256-DxgUDVr+kwtW55C4b89Pl+j3u2ILmACcQOvOBjKWAKQ=";
+                npmDepsHash = "sha256-5ZswgZFLeI32/xQZqCTTFbCzleDqr5AotjFg/5rNn1M=";
               }))
               python314Packages.mlx-lm
               stable-diffusion-cpp
