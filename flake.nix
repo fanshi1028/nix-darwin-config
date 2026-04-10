@@ -23,6 +23,8 @@
     let
       system = "aarch64-darwin";
       kmonad-exe = kmonad.packages."${system}".default;
+      pkgs-unstable = import nixpkgs-unstable { inherit system; };
+      blackhole2ch = pkgs-unstable.blackhole.override { channel = "2ch"; };
       configuration =
         { pkgs, ... }:
         let
@@ -110,62 +112,67 @@
           environment.variables = {
             EDITOR = "vim";
           };
-          environment.systemPackages =
-            (
-              with pkgs;
-              [
-                mpv
-                vim
-                cachix
-                git
-                # NOTE: Latest emacs for mac dictation
-                # https://xenodium.com/macos-dictation-returns-to-emacs-fix-merged
-                (import nixpkgs {
-                  inherit system;
-                  overlays = [ emacs-overlay.overlays.default ];
-                }).emacs-git-pgtk
-                localsend
-                nix-output-monitor
-                ripgrep
-                zstd
-                nixfmt-rfc-style
-                ffmpeg
-                emacs-lsp-booster
-                python313Packages.huggingface-hub
-                # TEMP for doom emacs env: https://github.com/doomemacs/doomemacs/issues/6612#issuecomment-4150181313
-                fd
-                tree
-              ]
-              # default env to for using cabal inti to quick start haskell project
-              ++ [
-                haskell.compiler.ghc9122
-                cabal-install
-              ]
-              ++ lib.optionals (system == "aarch64-darwin") [
-                (callPackage ./obs-studio.nix { })
-              ]
-            )
-            ++ (with import nixpkgs-unstable { inherit system; }; [
-              yt-dlp
+          environment.systemPackages = [
+            blackhole2ch
+          ]
+          ++ (
+            with pkgs;
+            [
+              mpv
+              vim
+              cachix
+              git
+              # NOTE: Latest emacs for mac dictation
+              # https://xenodium.com/macos-dictation-returns-to-emacs-fix-merged
+              (import nixpkgs {
+                inherit system;
+                overlays = [ emacs-overlay.overlays.default ];
+              }).emacs-git-pgtk
+              localsend
+              nix-output-monitor
+              ripgrep
+              zstd
+              nixfmt-rfc-style
+              ffmpeg
+              emacs-lsp-booster
+              python313Packages.huggingface-hub
+              # TEMP for doom emacs env: https://github.com/doomemacs/doomemacs/issues/6612#issuecomment-4150181313
+              fd
+              tree
+            ]
+            # default env to for using cabal inti to quick start haskell project
+            ++ [
+              haskell.compiler.ghc9122
+              cabal-install
+            ]
+            ++ lib.optionals (system == "aarch64-darwin") [
+              (callPackage ./obs-studio.nix { })
+            ]
+          )
+          ++ (with pkgs-unstable; [
+            yt-dlp
 
-              (llama-cpp.overrideAttrs (finalAttrs: {
-                version = "8664";
-                src = fetchFromGitHub {
-                  owner = "ggml-org";
-                  repo = "llama.cpp";
-                  tag = "b${finalAttrs.version}";
-                  hash = "sha256-2bPFOEbBPpv2GwhMRkpJpIySh4/KLXKQ8uV7TiY3h+M=";
-                  leaveDotGit = true;
-                  postFetch = ''
-                    git -C "$out" rev-parse --short HEAD > $out/COMMIT
-                    find "$out" -name .git -print0 | xargs -0 rm -rf
-                  '';
-                };
-                npmDepsHash = "sha256-5ZswgZFLeI32/xQZqCTTFbCzleDqr5AotjFg/5rNn1M=";
-              }))
-              python314Packages.mlx-lm
-              stable-diffusion-cpp
-            ]);
+            (llama-cpp.overrideAttrs (finalAttrs: {
+              version = "8738";
+              src = fetchFromGitHub {
+                owner = "ggml-org";
+                repo = "llama.cpp";
+                tag = "b8738";
+                hash = "sha256-fFAdE4fyl1ul/xADIOdp2eclmRbcXl2lC3ps9bdn1L0=";
+                leaveDotGit = true;
+                postFetch = ''
+                  git -C "$out" rev-parse --short HEAD > $out/COMMIT
+                  find "$out" -name .git -print0 | xargs -0 rm -rf
+                '';
+              };
+              npmDepsHash = "sha256-eeftjKt0FuS0Dybez+Iz9VTVMA4/oQVh+3VoIqvhVMw=";
+              postPatch = ''
+                find tools/server/public -type f -not -name loading.html -delete # remove pre-compiled assets
+              '';
+            }))
+            python314Packages.mlx-lm
+            stable-diffusion-cpp
+          ]);
 
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
@@ -208,6 +215,22 @@
           # };
 
           security.pam.services.sudo_local.touchIdAuth = true;
+
+          # NOTE: https://github.com/nix-darwin/nix-darwin/issues/663#issuecomment-3192624455
+          # ref: https://github.com/nix-darwin/nix-darwin/blob/06648f4902343228ce2de79f291dd5a58ee12146/modules/fonts/default.nix#L47
+          system.activationScripts.extraActivation.text = ''
+            printf >&2 'setting up /Library/Audio/Plug-Ins/HAL/Blackhole2ch.driver...\n'
+            mkdir -p /Library/Audio/Plug-Ins/HAL
+
+            ${pkgs.rsync}/bin/rsync \
+                    --archive \
+                    --copy-links \
+                    --delete-during \
+                    --delete-missing-args \
+                    '${blackhole2ch}/Library/Audio/Plug-Ins/HAL/Blackhole2ch.driver' \
+                    '/Library/Audio/Plug-Ins/HAL/'
+          '';
+
         };
     in
     {
