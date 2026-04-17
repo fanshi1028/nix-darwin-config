@@ -153,19 +153,19 @@
             yt-dlp
 
             (llama-cpp.overrideAttrs (finalAttrs: {
-              version = "8738";
+              version = "8795";
               src = fetchFromGitHub {
                 owner = "ggml-org";
                 repo = "llama.cpp";
-                tag = "b8738";
-                hash = "sha256-fFAdE4fyl1ul/xADIOdp2eclmRbcXl2lC3ps9bdn1L0=";
+                tag = "b8795";
+                hash = "sha256-bp3a0YrC31pVrzJPQXoH5E2RQNXpHGLDmTFnVGkY+vw=";
                 leaveDotGit = true;
                 postFetch = ''
                   git -C "$out" rev-parse --short HEAD > $out/COMMIT
                   find "$out" -name .git -print0 | xargs -0 rm -rf
                 '';
               };
-              npmDepsHash = "sha256-eeftjKt0FuS0Dybez+Iz9VTVMA4/oQVh+3VoIqvhVMw=";
+              npmDepsHash = "sha256-RAFtsbBGBjteCt5yXhrmHL39rIDJMCFBETgzId2eRRk=";
               postPatch = ''
                 find tools/server/public -type f -not -name loading.html -delete # remove pre-compiled assets
               '';
