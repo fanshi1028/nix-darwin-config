@@ -148,6 +148,7 @@
             ++ lib.optionals (system == "aarch64-darwin") [
               (callPackage ./obs-studio.nix { })
               (callPackage ./swiftlm.nix { })
+              (callPackage ./blender.nix { })
             ]
           )
           ++ (with pkgs-unstable; [
