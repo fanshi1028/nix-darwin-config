@@ -158,8 +158,19 @@
                   appname = "OBS";
                 }
               )
+              (
+                let
+                  pname = "blender";
+                  version = "5.1.1";
+                  appname = "Blender";
+                in
+                callPackage ./mac-app.nix { } {
+                  inherit pname version appname;
+                  url = "https://download.blender.org/release/${appname} ${lib.versions.majorMinor version}/${pname}-${version}-macos-arm64.dmg";
+                  sha256 = "sha256-/2IZs6qrTZrfVIuaMrOzF2T+dAtsdB0WZgxcD0/+mEE=";
+                }
+              )
               (callPackage ./swiftlm.nix { })
-              (callPackage ./blender.nix { })
             ]
           )
           ++ (with pkgs-unstable; [
