@@ -175,25 +175,7 @@
           )
           ++ (with pkgs-unstable; [
             yt-dlp
-
-            (llama-cpp.overrideAttrs (finalAttrs: {
-              version = "8795";
-              src = fetchFromGitHub {
-                owner = "ggml-org";
-                repo = "llama.cpp";
-                tag = "b8795";
-                hash = "sha256-bp3a0YrC31pVrzJPQXoH5E2RQNXpHGLDmTFnVGkY+vw=";
-                leaveDotGit = true;
-                postFetch = ''
-                  git -C "$out" rev-parse --short HEAD > $out/COMMIT
-                  find "$out" -name .git -print0 | xargs -0 rm -rf
-                '';
-              };
-              npmDepsHash = "sha256-RAFtsbBGBjteCt5yXhrmHL39rIDJMCFBETgzId2eRRk=";
-              postPatch = ''
-                find tools/server/public -type f -not -name loading.html -delete # remove pre-compiled assets
-              '';
-            }))
+            llama-cpp
             python314Packages.mlx-lm
             stable-diffusion-cpp
           ]);
