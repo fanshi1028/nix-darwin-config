@@ -185,6 +185,7 @@
                 }
               )
               (callPackage ./swiftlm.nix { })
+              (callPackage ./draw-things-cli.nix { })
             ]
           )
           ++ (with pkgs-unstable; [
