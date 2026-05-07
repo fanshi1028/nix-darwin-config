@@ -118,6 +118,7 @@
           ++ (
             with pkgs;
             [
+              firefox
               yt-dlp
               mpv
               vim
