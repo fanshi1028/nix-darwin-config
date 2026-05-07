@@ -189,9 +189,7 @@
             ]
           )
           ++ (with pkgs-unstable; [
-            llama-cpp
             python314Packages.mlx-lm
-            stable-diffusion-cpp
           ]);
 
           # Necessary for using flakes on this system.
