@@ -170,6 +170,18 @@
                   sha256 = "sha256-/2IZs6qrTZrfVIuaMrOzF2T+dAtsdB0WZgxcD0/+mEE=";
                 }
               )
+              (
+                let
+                  pname = "omlx";
+                  version = "0.3.8";
+                  appname = "oMLX";
+                in
+                callPackage ./mac-app.nix { } {
+                  inherit pname version appname;
+                  url = "https://github.com/jundot/omlx/releases/download/v${version}/${appname}-${version}-macos26-tahoe.dmg";
+                  sha256 = "sha256-gD2ZkkevE7x3jOYj2271OSZqguNczZhKgKQLDcKkURQ=";
+                }
+              )
               (callPackage ./swiftlm.nix { })
             ]
           )
