@@ -118,6 +118,7 @@
           ++ (
             with pkgs;
             [
+              yt-dlp
               mpv
               vim
               cachix
@@ -186,7 +187,6 @@
             ]
           )
           ++ (with pkgs-unstable; [
-            yt-dlp
             llama-cpp
             python314Packages.mlx-lm
             stable-diffusion-cpp
