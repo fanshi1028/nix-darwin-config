@@ -7,21 +7,18 @@
   undmg,
   unzip,
 }:
-
-let
-  inherit (stdenv.hostPlatform) system;
-  pname = "obs-studio";
-  version = "32.1.0";
-  appname = "OBS";
-in
-lib.throwIfNot (system == "aarch64-darwin") "expected aarch64-darwin" (
+{
+  pname,
+  version,
+  url,
+  sha256,
+  appname ? pname,
+}:
+lib.throwIfNot (stdenv.hostPlatform.system == "aarch64-darwin") "expected aarch64-darwin" (
   stdenv.mkDerivation {
     inherit pname version;
 
-    src = fetchurl {
-      url = "https://cdn-fastly.obsproject.com/downloads/${pname}-${version}-macos-apple.dmg";
-      sha256 = "sha256-pdw1B74WG+zvXK2BEsSs0WjLw3yA/BhrZu1FO36fT8U=";
-    };
+    src = fetchurl { inherit url sha256; };
 
     nativeBuildInputs = [ undmg ];
     buildInputs = [ unzip ];

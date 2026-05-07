@@ -146,7 +146,18 @@
               cabal-install
             ]
             ++ lib.optionals (system == "aarch64-darwin") [
-              (callPackage ./obs-studio.nix { })
+              (
+                let
+                  pname = "obs-studio";
+                  version = "32.1.0";
+                in
+                callPackage ./mac-app.nix { } {
+                  inherit pname version;
+                  url = "https://cdn-fastly.obsproject.com/downloads/${pname}-${version}-macos-apple.dmg";
+                  sha256 = "sha256-pdw1B74WG+zvXK2BEsSs0WjLw3yA/BhrZu1FO36fT8U=";
+                  appname = "OBS";
+                }
+              )
               (callPackage ./swiftlm.nix { })
               (callPackage ./blender.nix { })
             ]
