@@ -184,6 +184,19 @@
                   sha256 = "sha256-gD2ZkkevE7x3jOYj2271OSZqguNczZhKgKQLDcKkURQ=";
                 }
               )
+              (
+                let
+                  pname = "ungoogled-chromium";
+                  version = "147.0.7727.116-1.1";
+                  appname = "Chromium";
+                in
+                callPackage ./mac-app.nix { } {
+                  inherit pname version appname;
+                  url = "https://github.com/ungoogled-software/${pname}-macos/releases/download/${version}/${pname}_${version}_arm64-macos.dmg";
+                  sha256 = "sha256-w59h9xtlvnKhKeWRvH+CklHg5tONy7aRyiCdHCNk9sU=";
+                }
+              )
+
               (callPackage ./swiftlm.nix { })
               (callPackage ./draw-things-cli.nix { })
             ]
