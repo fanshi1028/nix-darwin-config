@@ -175,13 +175,13 @@
               (
                 let
                   pname = "omlx";
-                  version = "0.3.8";
+                  version = "0.3.12";
                   appname = "oMLX";
                 in
                 callPackage ./mac-app.nix { } {
                   inherit pname version appname;
                   url = "https://github.com/jundot/omlx/releases/download/v${version}/${appname}-${version}-macos26-tahoe.dmg";
-                  sha256 = "sha256-gD2ZkkevE7x3jOYj2271OSZqguNczZhKgKQLDcKkURQ=";
+                  sha256 = "sha256-HaAsE1NyUymg9E1AtEC8x408z6UeOBjNx80lBMQXbJQ=";
                 }
               )
               (
