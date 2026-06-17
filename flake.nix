@@ -134,7 +134,7 @@
               nix-output-monitor
               ripgrep
               zstd
-              nixfmt-rfc-style
+              nixfmt
               ffmpeg
               emacs-lsp-booster
               python313Packages.huggingface-hub
