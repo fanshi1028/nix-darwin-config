@@ -202,6 +202,7 @@
 
               (callPackage ./swiftlm.nix { })
               (callPackage ./draw-things-cli.nix { })
+              (callPackage ./ds4.nix { })
             ]
           )
           ++ (with pkgs-unstable; [
