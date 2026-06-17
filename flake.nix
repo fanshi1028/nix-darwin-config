@@ -1,14 +1,15 @@
 {
   description = "Fanshi1028's nix-darwin system flake";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs-2511.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     kmonad.url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
     kmonad.inputs.nixpkgs.follows = "nixpkgs";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs-2511";
   };
 
   outputs =
@@ -16,6 +17,7 @@
       self,
       nix-darwin,
       nixpkgs,
+      nixpkgs-2511,
       nixpkgs-unstable,
       kmonad,
       emacs-overlay,
@@ -126,7 +128,7 @@
               git
               # NOTE: Latest emacs for mac dictation
               # https://xenodium.com/macos-dictation-returns-to-emacs-fix-merged
-              (import nixpkgs {
+              (import nixpkgs-2511 {
                 inherit system;
                 overlays = [ emacs-overlay.overlays.default ];
               }).emacs-git-pgtk
@@ -137,10 +139,11 @@
               nixfmt
               ffmpeg
               emacs-lsp-booster
-              python313Packages.huggingface-hub
               # TEMP for doom emacs env: https://github.com/doomemacs/doomemacs/issues/6612#issuecomment-4150181313
               fd
               tree
+              python314Packages.huggingface-hub
+              python314Packages.mlx-lm
             ]
             # default env to for using cabal inti to quick start haskell project
             ++ [
@@ -202,7 +205,6 @@
             ]
           )
           ++ (with pkgs-unstable; [
-            python314Packages.mlx-lm
           ]);
 
           # Necessary for using flakes on this system.
