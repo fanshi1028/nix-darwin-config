@@ -3,6 +3,7 @@
   stdenv,
   fetchFromGitHub,
   apple-sdk_26,
+  makeWrapper,
 }:
 
 stdenv.mkDerivation {
@@ -16,6 +17,7 @@ stdenv.mkDerivation {
     sha256 = "sha256-Ieuc72GHZs20ModQfnvI5Me31n4Pj+WFYtsuqaKJceo=";
   };
 
+  nativeBuildInputs = [ makeWrapper ];
   buildInputs = [ apple-sdk_26 ];
 
   preBuild = ''
@@ -24,9 +26,12 @@ stdenv.mkDerivation {
 
   installPhase = ''
     runHook preInstall
-    mkdir -p $out/bin
+    mkdir -p $out/bin $out/include
+    cp -r metal $out/include/
     for bin in ds4 ds4-server ds4-bench ds4-eval ds4-agent; do
       install -m 755 "$bin" "$out/bin/"
+      wrapProgram "$out/bin/$bin" \
+        --set DS4_METAL_FLASH_ATTN_SOURCE "$out/include/metal/flash_attn.metal"
     done
     runHook postInstall
   '';
