@@ -146,6 +146,7 @@
               # TEMP for doom emacs env: https://github.com/doomemacs/doomemacs/issues/6612#issuecomment-4150181313
               fd
               tree
+              jujutsu
               python314Packages.huggingface-hub
               python314Packages.mlx-lm
             ]
