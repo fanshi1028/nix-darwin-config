@@ -100,6 +100,10 @@
               "https://nix-community.cachix.org"
               "https://haskell-miso-cachix.cachix.org"
             ];
+            extra-sandbox-paths = [
+              "/private/etc/ssl/certs/"
+              "/private/etc/static/ssl/certs/"
+            ];
           };
 
           nix.registry = {
