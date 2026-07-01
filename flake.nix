@@ -152,7 +152,7 @@
             ]
             # default env to for using cabal inti to quick start haskell project
             ++ [
-              haskell.compiler.ghc9122
+              haskell.compiler.ghc9124
               cabal-install
             ]
             ++ lib.optionals (system == "aarch64-darwin") [
