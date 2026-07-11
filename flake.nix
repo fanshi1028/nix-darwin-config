@@ -183,13 +183,13 @@
               (
                 let
                   pname = "omlx";
-                  version = "0.4.4";
+                  version = "0.5.3";
                   appname = "oMLX";
                 in
                 callPackage ./mac-app.nix { } {
                   inherit pname version appname;
                   url = "https://github.com/jundot/omlx/releases/download/v${version}/${appname}-${version}-macos26-27.dmg";
-                  sha256 = "sha256-bfVrEVQm94kKDHNP+B2J5V5IWd/KIVQ+EkBBMh9VWP0=";
+                  sha256 = "sha256-FaKnTiC/RRjW9hM69OzA8+TGYQ8xJ8FhKuYXjvdJpMg=";
                 }
               )
               (
