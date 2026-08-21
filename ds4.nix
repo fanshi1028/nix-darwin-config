@@ -49,7 +49,8 @@ stdenv.mkDerivation {
         --set DS4_METAL_GLU_SOURCE "$out/include/metal/glu.metal" \
         --set DS4_METAL_NORM_SOURCE "$out/include/metal/norm.metal" \
         --set DS4_METAL_BIN_SOURCE "$out/include/metal/bin.metal" \
-        --set DS4_METAL_SET_ROWS_SOURCE "$out/include/metal/set_rows.metal"
+        --set DS4_METAL_SET_ROWS_SOURCE "$out/include/metal/set_rows.metal" \
+        --add-flags "-m ~/.cache/huggingface/hub/models--antirez--deepseek-v4-gguf/snapshots/86bb38ce2ba7a98ab0e550359fec5f48859dc723/DeepSeek-V4-Flash-Layers37-42Q4KExperts-OtherExpertLayersIQ2XXSGateUp-Q2KDown-AProjQ8-SExpQ8-OutQ8-chat-v2-imatrix-fixed-0731.gguf"
     done
     runHook postInstall
   '';
